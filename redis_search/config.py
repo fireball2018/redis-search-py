@@ -5,14 +5,14 @@ import redis
 
 complete_max_length = 10
 pinyin_match        = True
+debug               = True
 
 class Config:
 
     r = None
-    debug = False
-
+    
     def __init__(self):
-        """docstring for init"""
+        """docstring for __init__"""
         pass
 
     @classmethod
@@ -23,4 +23,3 @@ class Config:
             self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
         return self.r
-

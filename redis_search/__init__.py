@@ -80,8 +80,8 @@ def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
         temp_store_key = words[0]
 
     # 根据需要的数量取出 ids
-    ids = redis.sort(temp_store_key, 
-                    start = 0,
+    ids = redis.sort(temp_store_key,
+                    start = offset,
                     num = limit,
                     by = mk_score_key(name, "*"),
                     desc = True)
@@ -134,7 +134,6 @@ def complete(name, w, limit=10, conditions={}):
 
     # 组合 words 的特别 key 名
     words = []
-
     for word in prefix_matchs:
         words.append(mk_sets_key(name, word))
 
@@ -150,7 +149,7 @@ def complete(name, w, limit=10, conditions={}):
     # 按词语搜索
     temp_store_key = "tmpsunionstore:%s" % "+".join(words)
     if len(words) == 0:
-	    logging.info("no words")
+        logging.info("no words")
     elif len(words) > 1:
         if not redis.exists(temp_store_key):
             
