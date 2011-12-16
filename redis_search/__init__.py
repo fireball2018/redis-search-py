@@ -30,10 +30,7 @@ def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
 
     condition_keys = []
     if conditions:
-        if type(conditions[0]) is dict:
-            conditions = conditions[0]
-
-        for c in conditions.keys():
+        for c in conditions:
             condition_keys.append(mk_condition_key(name, c, conditions[c]))
             
         # 将条件的 key 放入关键词搜索集合内，用于 sinterstore 搜索
@@ -140,10 +137,7 @@ def complete(name, w, limit=10, conditions={}):
     # 组合特别 key ,但这里不会像 query 那样放入 words， 因为在 complete 里面 words 是用 union 取的，condition_keys 和 words 应该取交集
     condition_keys = []
     if conditions:
-        if type(conditions[0]) is dict:
-            conditions = conditions[0]
-        
-        for c in conditions.keys():
+        for c in conditions:
             condition_keys.append(mk_condition_key(name, c, conditions[c]))
     
     # 按词语搜索
