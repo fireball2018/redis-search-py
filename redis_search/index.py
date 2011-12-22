@@ -7,7 +7,7 @@ import logging
 import config
 from chinese_pinyin import Pinyin
 from . import redis
-from . import split_words, split_pinyin, mk_sets_key, mk_score_key, mk_condition_key, mk_complete_key
+from . import split_words, split_pinyin, utf8, mk_sets_key, mk_score_key, mk_condition_key, mk_complete_key
 
 class Index(object):
     """docstring for Index"""
@@ -15,7 +15,7 @@ class Index(object):
     def __init__(self, name, id, title, score="id", exts={}, condition_fields=[], prefix_index_enable=True):
         
         self.name  = name
-        self.title = title
+        self.title = utf8(title)
         self.id    = id
         self.score = score
         self.exts  = exts
@@ -53,12 +53,12 @@ class Index(object):
             # word index for item id
             redis.sadd(key, self.id)
 
-            # score for search sort
-            redis.set(mk_score_key(self.name, self.id), self.score)
+        # score for search sort
+        redis.set(mk_score_key(self.name, self.id), self.score)
 
         # 将目前的编号保存到条件(conditions)字段所创立的索引上面
         for field in self.condition_fields:
-            redis.sadd(mk_condition_key(self.name, field, data[field]), self.id)
+            redis.sadd(mk_condition_key(self.name, field, utf8(data[field])), self.id)
 
         if self.prefix_index_enable:
             self.save_prefix_index()

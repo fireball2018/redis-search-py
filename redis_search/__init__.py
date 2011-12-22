@@ -22,6 +22,7 @@ def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
     if not text.strip() and not conditions:
         return result
 
+    text = utf8(text.strip())
     splited_words = split_words(text)
 
     words = []
@@ -31,7 +32,7 @@ def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
     condition_keys = []
     if conditions:
         for c in conditions:
-            condition_keys.append(mk_condition_key(name, c, conditions[c]))
+            condition_keys.append(mk_condition_key(name, c, utf8(conditions[c])))
             
         # 将条件的 key 放入关键词搜索集合内，用于 sinterstore 搜索
         words += condition_keys
@@ -94,6 +95,7 @@ def complete(name, w, limit=10, conditions={}):
         logging.debug("no word and conditions")
         return []
 
+    w = utf8(w.strip())
     prefix_matchs = []
     
     # This is not random, try to get replies < MTU size
@@ -138,7 +140,7 @@ def complete(name, w, limit=10, conditions={}):
     condition_keys = []
     if conditions:
         for c in conditions:
-            condition_keys.append(mk_condition_key(name, c, conditions[c]))
+            condition_keys.append(mk_condition_key(name, c, utf8(conditions[c])))
     
     # 按词语搜索
     temp_store_key = "tmpsunionstore:%s" % "+".join(words)
@@ -187,7 +189,7 @@ def hmget(name, ids, sort_field='id'):
         if r:
             result.append(json.loads(r))
 
-    return result 
+    return result
 
 def mk_sets_key(name, word):
     """docstring for mk_sets_key"""
@@ -221,3 +223,9 @@ def split_words(text):
         words.append(i)
 
     return words
+
+def utf8(value):
+    if isinstance(value, (bytes, type(None))):
+        return value
+    assert isinstance(value, unicode)
+    return value.encode("utf-8")

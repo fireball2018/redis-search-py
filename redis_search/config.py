@@ -16,10 +16,10 @@ class Config:
         pass
 
     @classmethod
-    def redis(self):
+    def redis(self, host="localhost", port=6379, db=0):
         """docstring for redis"""
 
         if self.r is None:
-            self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+            self.r = redis.StrictRedis(host=host, port=port, db=db)
 
         return self.r
