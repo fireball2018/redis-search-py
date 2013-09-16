@@ -12,7 +12,11 @@ from util import split_words, split_pinyin, utf8, mk_sets_key, mk_score_key, mk_
 class index(object):
     """docstring for Index"""
     
-    def __init__(self, name, id, title, score="id", condition_fields=None, prefix_index_enable=True, **kwargs):
+    def __init__(self, name, id, title, score="id", condition_fields=None, 
+                    prefix_index_enable=True, exts=None, **kwargs):
+
+        if isinstance(exts, dict):
+            kwargs.update(exts)
         
         self.name  = name
         self.title = utf8(title)

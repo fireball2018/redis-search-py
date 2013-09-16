@@ -29,7 +29,7 @@ i.save()
 
 i = index("test", 3, "张无忌最后没有选定自己的配偶", "id", exts= {
      'username':"jiedan", 'email':'lxb429@gmail.com'
-})
+}, password="123456")
 i.save()
 
 i = index("test", 4, "Redis 是一个高性能的key-value数据库", "id", exts= {

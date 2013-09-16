@@ -10,8 +10,10 @@ from chinese_pinyin import Pinyin
 import util
 from util import split_words, split_pinyin, utf8, mk_sets_key, mk_score_key, mk_condition_key, mk_complete_key
 
-def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
+def query(name, text, offset=0, limit=10, sort_field='id', conditions=None):
     """docstring for query"""
+
+    conditions = conditions if isinstance(conditions, dict) and conditions else {}
 
     tm = time.time()
     result = []
@@ -83,11 +85,13 @@ def query(name, text, offset=0, limit=10, sort_field='id', conditions={}):
                     desc = True)
 
     result = util.hmget(name, ids, sort_field=sort_field)
-    logging.info("%s:\"%s\" | Time spend:%ss" % (name, text, time.time()-tm))
+    logging.debug("%s:\"%s\" | Time spend:%ss" % (name, text, time.time()-tm))
     return result
 
-def complete(name, keyword, limit=10, conditions={}):
+def complete(name, keyword, limit=10, conditions=None):
     """docstring for complete"""
+
+    conditions = conditions if isinstance(conditions, dict) and conditions else {}
 
     if not keyword and not conditions:
         logging.debug("no word and conditions")
