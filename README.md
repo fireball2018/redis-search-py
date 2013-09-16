@@ -13,6 +13,7 @@ High performance real-time search (Support Chinese), index in Redis for Python, 
 
 ## Requirements
 
-* redis 2.4
-* python 2.6+
+* redis 2.4+
+* python 2.7+
+* redis-py 2.8+
 * mmseg [http://pypi.python.org/pypi/mmseg](http://pypi.python.org/pypi/mmseg)
