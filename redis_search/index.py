@@ -103,6 +103,9 @@ class index(object):
             words += split_pinyin(title)
         
         return words
+
+    def save_fulltext_index(self):
+        pass
     
     def save_prefix_index(self):
         """docstring for save_prefix_index"""
