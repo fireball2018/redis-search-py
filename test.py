@@ -11,14 +11,14 @@ from redis_search.util import split_words
 from redis_search.index import index
 from redis_search.query import query, complete
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s:%(msecs)03d %(levelname)-8s %(message)s',
+logging.basicConfig(level=logging.INFO, format='%(asctime)s:%(msecs)03d %(levelname)-8s %(message)s',
         datefmt='%m-%d %H:%M')
 
 words = split_words("最主要的更动是：张无忌最后没有选定自己的配偶。:,.")
 for w in words:
     print w
 
-pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=8)
+pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=0)
 redis_search.util.redis = redis.Redis(connection_pool=pool)
 
 i = index("test", 1, "Redis")
