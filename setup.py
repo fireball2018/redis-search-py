@@ -8,6 +8,9 @@ setup(
     version='0.1',
     packages=['redis_search'],
     include_package_data = True,
+    package_data = {
+        '': ['*.dat'],
+    },
     author='jiedan',
     author_email='lxb429@gmail.com',
     license='MIT License',
